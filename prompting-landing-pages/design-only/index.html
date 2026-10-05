@@ -1,0 +1,267 @@
+<!--
+  ============================================================================
+  QUADRANT: design defined ✅ / requirements undefined ❌
+  The prompt described exactly how it should LOOK, and nothing about how it
+  should WORK. See ../prompts/design-only-prompt.md
+
+  Look at this at 1280px and it is the nicest page in the folder.
+  Look at it at 375px, or with the keyboard, and it is the worst.
+  ============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- The viewport tag IS here. That is the lesson: it is not what makes a page responsive. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* No token layer — the prompt named the colours, so they got pasted in
+       literally, 30+ times. Rebranding this page is a find-and-replace job. */
+
+    * { box-sizing: border-box; margin: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FAF9F5;
+      color: #14171D;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fixed width. Not max-width. This single line is most of what goes wrong. */
+    .container { width: 1120px; margin: 0 auto; }
+
+    h1, h2, h3 { font-family: 'Inter Tight', sans-serif; letter-spacing: -0.03em; line-height: 1.05; font-weight: 600; }
+
+    /* Every size is a hard pixel value — nothing scales with the viewport. */
+
+    /* ---------- header ---------- */
+    .header { padding: 28px 0; }
+    .header-inner { display: flex; align-items: center; }
+    .logo { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.03em; }
+    .menu { display: flex; gap: 36px; margin-left: 72px; font-size: 15px; color: #6B7280; }
+    .menu span { cursor: pointer; }
+    .header-cta { margin-left: auto; display: flex; gap: 12px; }
+
+    /* Clickable divs. No <a>, no <button>, no tab stop, no Enter key. */
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 999px;
+      font-size: 15px; font-weight: 500; cursor: pointer;
+      outline: none;   /* focus ring deliberately removed for "cleanliness" */
+    }
+    .btn-solid { background: #C6F24E; color: #14171D; }
+    .btn-quiet { color: #6B7280; }
+    .btn-line  { border: 1px solid #E6E4DC; background: #fff; }
+    .btn-lg { padding: 15px 30px; font-size: 16px; }
+
+    /* ---------- hero ---------- */
+    .hero { padding: 96px 0 120px; text-align: center; position: relative; overflow: hidden; }
+    .hero::after {
+      content: ''; position: absolute; top: -320px; left: 50%; margin-left: -500px;
+      width: 1000px; height: 1000px; z-index: -1;
+      background: radial-gradient(circle, rgba(198,242,78,0.30) 0%, rgba(198,242,78,0) 62%);
+    }
+    .badge {
+      display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #6B7280;
+      border: 1px solid #E6E4DC; background: #fff;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 30px;
+    }
+
+    /* 64px, always. At a 320px viewport one word is wider than the screen. */
+    .hero h1 { font-size: 64px; margin-bottom: 24px; }
+
+    /* Pale grey on off-white. Elegant in a mockup, ~2.4:1 in a contrast checker. */
+    .hero p { font-size: 19px; color: #A3A39B; width: 620px; margin: 0 auto 40px; line-height: 1.6; }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; }
+
+    .mock {
+      width: 900px; margin: 72px auto 0; background: #fff;
+      border: 1px solid #E6E4DC; border-radius: 22px; padding: 28px;
+      box-shadow: 0 40px 80px -40px rgba(20,23,29,0.28);
+      display: flex; gap: 28px; text-align: left;
+    }
+    .mock-left { width: 300px; }
+    .mock-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #A3A39B; }
+    .mock-num { font-family: 'Inter Tight', sans-serif; font-size: 52px; letter-spacing: -0.04em; margin: 10px 0 6px; }
+    .mock-sub { font-size: 14px; color: #A3A39B; }
+    .mock-right { flex: 1; display: flex; align-items: flex-end; gap: 10px; height: 160px; }
+    .bar { flex: 1; background: #EFEDE4; border-radius: 6px 6px 0 0; }
+    .bar.on { background: #C6F24E; }
+
+    /* ---------- features ---------- */
+    .section { padding: 110px 0; }
+    .section-head { text-align: center; margin-bottom: 64px; }
+    .section-head h2 { font-size: 42px; margin-bottom: 16px; }
+    .section-head p { font-size: 17px; color: #A3A39B; }
+
+    /* Flexbox with fixed-width children. 352×3 + 32×2 = exactly 1120. Nothing can reflow. */
+    .features { display: flex; gap: 32px; }
+    .feature { width: 352px; background: #fff; border: 1px solid #E6E4DC; border-radius: 20px; padding: 32px; }
+    .feature-icon { width: 44px; height: 44px; border-radius: 12px; background: #C6F24E; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
+    .feature-icon svg { width: 21px; height: 21px; }
+    .feature h3 { font-size: 19px; margin-bottom: 10px; }
+    .feature p { font-size: 15px; color: #A3A39B; line-height: 1.65; }
+
+    /* ---------- pricing ---------- */
+    .pricing { display: flex; gap: 24px; align-items: flex-start; }
+    .plan { width: 357px; background: #fff; border: 1px solid #E6E4DC; border-radius: 20px; padding: 34px 30px; }
+    .plan.featured { border-color: #14171D; }
+    .plan-name { font-size: 17px; margin-bottom: 14px; }
+    .plan-price { font-family: 'Inter Tight', sans-serif; font-size: 46px; letter-spacing: -0.04em; margin-bottom: 6px; }
+    .plan-price span { font-family: 'Inter', sans-serif; font-size: 14px; color: #A3A39B; letter-spacing: 0; }
+    .plan-desc { font-size: 14px; color: #A3A39B; margin-bottom: 26px; }
+    .plan ul { list-style: none; padding: 0; margin: 0 0 28px; }
+    .plan li { font-size: 15px; color: #A3A39B; padding: 9px 0; border-bottom: 1px solid #F1EFE8; }
+    .plan .btn { display: block; text-align: center; }
+
+    /* ---------- cta ---------- */
+    .cta { background: #14171D; color: #FAF9F5; border-radius: 32px; padding: 90px 60px; text-align: center; margin-bottom: 110px; }
+    .cta h2 { font-size: 44px; margin-bottom: 18px; }
+    .cta p { font-size: 17px; color: #8A8F99; margin-bottom: 36px; }
+    .cta-form { display: flex; gap: 10px; width: 440px; margin: 0 auto; }
+    /* An input with no <label> anywhere. */
+    .cta-form input {
+      flex: 1; padding: 14px 20px; border-radius: 999px; font-size: 15px;
+      border: 1px solid rgba(250,249,245,0.22); background: rgba(250,249,245,0.08);
+      color: #FAF9F5; outline: none;
+    }
+    .cta-form input::placeholder { color: rgba(250,249,245,0.45); }
+
+    /* ---------- footer ---------- */
+    .footer { border-top: 1px solid #E6E4DC; padding: 36px 0; display: flex; align-items: center; }
+    .footer p { font-size: 13px; color: #A3A39B; }
+    .footer .links { margin-left: auto; display: flex; gap: 26px; font-size: 13px; color: #A3A39B; }
+
+    /* There are no media queries in this file. Not one. */
+  </style>
+</head>
+<body>
+
+  <!-- Divs all the way down: no header, nav, main, section or footer element. -->
+  <div class="header">
+    <div class="container header-inner">
+      <div class="logo">Pulse</div>
+      <div class="menu">
+        <span>Product</span><span>Solutions</span><span>Pricing</span><span>Docs</span>
+      </div>
+      <div class="header-cta">
+        <div class="btn btn-quiet">Sign in</div>
+        <div class="btn btn-solid">Get started</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="container">
+      <div class="badge">Introducing Pulse 4.0</div>
+      <h1>Analytics, reimagined.</h1>
+      <!-- Reads beautifully. Says nothing. Nobody specified what the product does. -->
+      <p>The modern way to understand your users. Beautiful dashboards, powerful insights
+         and zero friction — so your team can focus on what actually matters.</p>
+      <div class="hero-btns">
+        <div class="btn btn-solid btn-lg">Get started free</div>
+        <div class="btn btn-line btn-lg">Book a demo</div>
+      </div>
+
+      <!-- No alt text, no aria-label, invisible to a screen reader. -->
+      <div class="mock">
+        <div class="mock-left">
+          <div class="mock-label">Weekly active</div>
+          <div class="mock-num">24,891</div>
+          <div class="mock-sub">+12.4% vs last week</div>
+        </div>
+        <div class="mock-right">
+          <div class="bar" style="height:38%"></div>
+          <div class="bar" style="height:54%"></div>
+          <div class="bar" style="height:44%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:62%"></div>
+          <div class="bar on" style="height:88%"></div>
+          <div class="bar" style="height:76%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Built for modern teams</h2>
+        <p>Everything you need, nothing you don't.</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V9M10 19V4M16 19v-7M22 19H2" stroke="#14171D" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <h3>Real-time data</h3>
+          <p>See what's happening the moment it happens, with dashboards that update live.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#14171D" stroke-width="2"/><path d="m16.5 16.5 4 4" stroke="#14171D" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <h3>Powerful insights</h3>
+          <p>Surface the trends that matter and share them with your whole organisation.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2.5" stroke="#14171D" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#14171D" stroke-width="2"/></svg></div>
+          <h3>Enterprise ready</h3>
+          <p>Security, compliance and scale built in from day one. Trusted by teams worldwide.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Simple pricing</h2>
+        <p>Choose the plan that works for you.</p>
+      </div>
+      <div class="pricing">
+        <div class="plan">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">$0<span>/mo</span></div>
+          <div class="plan-desc">For small teams getting started.</div>
+          <ul><li>Up to 3 users</li><li>Basic analytics</li><li>Community support</li></ul>
+          <div class="btn btn-line">Get started</div>
+        </div>
+        <div class="plan featured">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">$29<span>/mo</span></div>
+          <div class="plan-desc">For growing companies.</div>
+          <ul><li>Unlimited users</li><li>Advanced analytics</li><li>Integrations</li><li>Priority support</li></ul>
+          <div class="btn btn-solid">Get started</div>
+        </div>
+        <div class="plan">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price">Custom</div>
+          <div class="plan-desc">For large organisations.</div>
+          <ul><li>SSO &amp; SAML</li><li>Dedicated support</li><li>Custom contracts</li></ul>
+          <div class="btn btn-line">Contact us</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="cta">
+      <h2>Ready to get started?</h2>
+      <p>Join thousands of teams already using Pulse.</p>
+      <div class="cta-form">
+        <input type="text" placeholder="Enter your email">
+        <div class="btn btn-solid">Get started</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="footer">
+      <p>© 2026 Pulse. All rights reserved.</p>
+      <div class="links"><span>Privacy</span><span>Terms</span><span>Twitter</span></div>
+    </div>
+  </div>
+
+</body>
+</html>

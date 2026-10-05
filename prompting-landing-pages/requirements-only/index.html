@@ -1,0 +1,277 @@
+<!--
+  ============================================================================
+  QUADRANT: requirements defined ✅ / design undefined ❌
+  The prompt specified every section, every constraint and a definition of
+  done — and said nothing about how it should look.
+  See ../prompts/requirements-only-prompt.md
+
+  This page passes every test in the good prompt's checklist. Resize it to
+  320px: fine. Tab through it: fine. Contrast: fine. Dark mode: fine.
+  It is also completely forgettable, and that is the entire point.
+  ============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulse — Product analytics for your team</title>
+  <meta name="description" content="Pulse reads your warehouse and answers product questions with the chart, the cohort and the likely causes.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#">Pulse</a>
+
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">Menu</button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Primary">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-link" href="#">Sign in</a>
+        <a class="btn btn-primary" href="#cta">Start free</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="hero">
+      <div class="container">
+        <p class="tagline">Version 4.0 — cohort autopilot</p>
+        <h1>Product analytics that answers the question, not the query</h1>
+        <p class="lead">
+          Stop translating product questions into SQL. Ask Pulse what changed and get the chart,
+          the affected cohort and a ranked list of likely causes — before your stand-up ends.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary btn-lg" href="#cta">Start free — 14 days</a>
+          <a class="btn btn-secondary btn-lg" href="#how">See how it works</a>
+        </div>
+        <p class="small">No credit card · SOC 2 Type II · Data stays in your region</p>
+
+        <div class="panel" role="img" aria-label="Dashboard showing activation at 41.2 percent, down 6.4 points, with three ranked causes.">
+          <p class="panel-q">“Why did activation drop for new teams last week?”</p>
+          <p class="panel-metric">41.2% <span class="down">−6.4 pts</span></p>
+          <ol class="panel-list">
+            <li>Signups from Google Ads skipped onboarding — 64%</li>
+            <li>Invite email bounced for @outlook domains — 21%</li>
+            <li>Mobile Safari checkout error — 9%</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="strip" aria-label="Customers">
+      <div class="container">
+        <p class="small center">Trusted by product teams at</p>
+        <ul class="logo-list">
+          <li>Northwind</li><li>Aperture</li><li>Kestrel</li><li>Lumen Labs</li><li>Fathom</li><li>Bluejay</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Everything your data team gets asked for, without the ticket</h2>
+          <p class="lead">Four things Pulse does well, instead of forty it does badly.</p>
+        </div>
+        <div class="grid">
+          <article class="box">
+            <h3>Ask in plain English</h3>
+            <p>Type the question the way you'd say it in a meeting. Pulse writes the query, shows it, and lets you edit the SQL if you want to.</p>
+          </article>
+          <article class="box">
+            <h3>Cohorts that build themselves</h3>
+            <p>Pulse spots the segment behind a metric move — plan, platform, source, region — and names it before you think to check.</p>
+          </article>
+          <article class="box">
+            <h3>Alerts with a reason attached</h3>
+            <p>Every alert arrives with the chart, the cohort and a ranked cause list. No more “retention is down” with no next step.</p>
+          </article>
+          <article class="box">
+            <h3>Your warehouse, your rules</h3>
+            <p>Reads from Snowflake, BigQuery or Postgres. Nothing is copied out, row-level permissions are respected, audit log included.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2>Connected on Monday. Answering questions by lunch.</h2>
+        </div>
+        <ol class="grid steps">
+          <li class="box">
+            <p class="step-n">Step 1</p>
+            <h3>Point it at your warehouse</h3>
+            <p>Read-only credentials, one screen. Pulse profiles your event tables and proposes a model you can correct.</p>
+          </li>
+          <li class="box">
+            <p class="step-n">Step 2</p>
+            <h3>Confirm the metrics that matter</h3>
+            <p>Activation, retention, expansion — define them once in your own language, and every answer uses the same definition.</p>
+          </li>
+          <li class="box">
+            <p class="step-n">Step 3</p>
+            <h3>Ask, share, repeat</h3>
+            <p>Every answer is a permalink with the query attached, so nobody has to trust a screenshot in Slack again.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section stats" aria-label="Results">
+      <div class="container">
+        <div class="grid">
+          <div class="stat"><p class="stat-n">11 min</p><p class="small">median time from question to answer</p></div>
+          <div class="stat"><p class="stat-n">73%</p><p class="small">fewer ad-hoc requests to the data team</p></div>
+          <div class="stat"><p class="stat-n">4,200</p><p class="small">product teams shipping with Pulse</p></div>
+          <div class="stat"><p class="stat-n">99.98%</p><p class="small">uptime over the last 12 months</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <figure class="quote">
+          <blockquote>
+            <p>We killed a weekly 40-slide metrics deck. People ask Pulse in the channel now, and the answer comes back with the query attached — so the argument is about the product, not about whose number is right.</p>
+          </blockquote>
+          <figcaption>Rania Abdelaziz — VP Product, Northwind</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <h2>Priced per seat, not per panic</h2>
+          <p class="lead">Every plan includes unlimited events. You are never billed for asking more questions.</p>
+        </div>
+        <div class="grid">
+          <article class="box plan">
+            <h3>Starter</h3>
+            <p class="price">$0 <span class="small">/month</span></p>
+            <p class="small">For one team finding its footing.</p>
+            <ul class="ticks">
+              <li>Up to 3 seats</li><li>1 warehouse connection</li><li>90 days of history</li><li>Community support</li>
+            </ul>
+            <a class="btn btn-secondary btn-block" href="#cta">Start free</a>
+          </article>
+          <article class="box plan featured">
+            <p class="badge">Most teams pick this</p>
+            <h3>Growth</h3>
+            <p class="price">$29 <span class="small">/seat/month</span></p>
+            <p class="small">For product orgs that ship weekly.</p>
+            <ul class="ticks">
+              <li>Unlimited seats</li><li>Cohort autopilot &amp; caused alerts</li><li>Unlimited history</li><li>Slack, Teams &amp; webhooks</li><li>Priority support, 4h response</li>
+            </ul>
+            <a class="btn btn-primary btn-block" href="#cta">Start 14-day trial</a>
+          </article>
+          <article class="box plan">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <p class="small">For regulated and multi-region teams.</p>
+            <ul class="ticks">
+              <li>SSO, SCIM &amp; audit exports</li><li>Regional data residency</li><li>Private networking</li><li>Named solutions engineer</li>
+            </ul>
+            <a class="btn btn-secondary btn-block" href="#cta">Talk to sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="faq">
+      <div class="container narrow">
+        <div class="section-head">
+          <h2>The questions we actually get asked</h2>
+        </div>
+        <details>
+          <summary>Do we have to move our data into Pulse?</summary>
+          <p>No. Pulse queries your warehouse directly with read-only credentials. Results are cached for speed, and you choose the cache window and region.</p>
+        </details>
+        <details>
+          <summary>What happens when it gets an answer wrong?</summary>
+          <p>Every answer shows the generated query. You can correct it inline, and the correction becomes part of your semantic model, so the same mistake isn't repeated.</p>
+        </details>
+        <details>
+          <summary>Can we keep our existing dashboards?</summary>
+          <p>Yes. Pulse is additive — most teams keep their BI tool for scheduled reporting and use Pulse for the questions that come up in between.</p>
+        </details>
+        <details>
+          <summary>How long does onboarding take?</summary>
+          <p>Median time to first useful answer is under three hours. Enterprise rollouts with SSO and residency requirements usually take two weeks.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section cta-section" id="cta">
+      <div class="container narrow center">
+        <h2>Ask your first question in about ten minutes</h2>
+        <p class="lead">Free for 14 days on every feature. No credit card, no sales call, no implementation project.</p>
+        <form class="signup" onsubmit="event.preventDefault(); this.reset(); document.getElementById('done').hidden = false;">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+          <button class="btn btn-primary" type="submit">Start free</button>
+        </form>
+        <p id="done" class="small" hidden>Thanks — check your inbox for the setup link.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="grid">
+        <div>
+          <p class="logo">Pulse</p>
+          <p class="small">Product analytics that answers the question, not the query.</p>
+        </div>
+        <nav aria-label="Product">
+          <h2>Product</h2>
+          <ul><li><a href="#features">Features</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#how">How it works</a></li><li><a href="#">Changelog</a></li></ul>
+        </nav>
+        <nav aria-label="Company">
+          <h2>Company</h2>
+          <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul>
+        </nav>
+        <nav aria-label="Legal">
+          <h2>Legal</h2>
+          <ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li><li><a href="#">DPA</a></li></ul>
+        </nav>
+      </div>
+      <p class="small copyright">© 2026 Pulse Analytics Inc. Built as a teaching example.</p>
+    </div>
+  </footer>
+
+  <script>
+    // The requirements said the mobile menu has to work, so it works.
+    var btn = document.getElementById('menuBtn');
+    var nav = document.getElementById('mainNav');
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      nav.classList.toggle('open', !open);
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>

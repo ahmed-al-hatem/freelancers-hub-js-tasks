@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Masonry gallery · long + short pattern</title>
+  <style>
+    /* ---------------------------------------------
+      Global reset & base (mobile first)
+    --------------------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f9fafc;
+      color: #1a1a1a;
+      line-height: 1.4;
+      padding: 1rem 1rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* main gallery container – full width, max-width */
+    .gallery {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* header – simple, left aligned */
+    .gallery-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .gallery-header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b0b0b;
+      margin-bottom: 0.2rem;
+    }
+
+    .gallery-header p {
+      font-size: 0.95rem;
+      color: #5e5e5e;
+    }
+
+    /* ---------------------------------------------
+      GRID SYSTEM – mobile first
+      pattern: "one long, one short" → alternating tall & short items
+      using grid-auto-rows + row span
+    --------------------------------------------- */
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      /* 1 column on mobile */
+      gap: 1rem;
+      list-style: none;
+      grid-auto-rows: 11rem;
+      /* base row height (mobile) */
+      grid-auto-flow: dense;
+      /* fill gaps if any */
+    }
+
+    /* every gallery item – card style */
+    .gallery-item {
+      background: #ffffff;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      /* grid item spans are set below */
+    }
+
+    /* subtle lift on hover (only on devices that support hover) */
+    @media (hover: hover) {
+      .gallery-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 24px rgba(0, 0, 0, 0.06), 0 6px 12px rgba(0, 0, 0, 0.03);
+      }
+    }
+
+    /* ----- the pattern: long (2 rows) & short (1 row) ----- */
+    /* long items span 2 rows */
+    .gallery-item.long {
+      grid-row: span 2;
+    }
+
+    /* short items span 1 row (default) */
+    .gallery-item.short {
+      grid-row: span 1;
+    }
+
+    /* image area – flexible, fills available height */
+    .gallery-image {
+      flex: 1;
+      background: #e3e8ef;
+      background-image: linear-gradient(145deg, #eef1f6 0%, #d9e0e8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      min-height: 0;
+      /* flex overflow fix */
+    }
+
+    /* placeholder icon */
+    .gallery-image::before {
+      content: "📷";
+      font-size: 2rem;
+      opacity: 0.5;
+      filter: grayscale(0.2);
+      transition: opacity 0.2s;
+    }
+
+    /* when real image is used – cover perfectly */
+    .gallery-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* caption – always at the bottom */
+    .gallery-caption {
+      padding: 0.75rem 0.9rem 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1f1f1f;
+      background: #ffffff;
+      border-top: 1px solid #f0f2f5;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------------------------------------------
+      Responsive breakpoints – mobile first
+      – 480px: 2 columns
+      – 768px: 3 columns
+      – 1024px: 4 columns
+      – 1280px: 5 columns
+      also adjust row height for larger screens
+    --------------------------------------------- */
+
+    /* ≥ 480px: two columns, slightly taller base row */
+    @media (min-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        grid-auto-rows: 10rem;
+      }
+
+      .gallery-header h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* ≥ 768px: three columns, more breathing room */
+    @media (min-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        grid-auto-rows: 11rem;
+      }
+
+      .gallery-header {
+        margin-bottom: 2rem;
+      }
+
+      .gallery-header h1 {
+        font-size: 2.4rem;
+      }
+
+      .gallery-caption {
+        font-size: 0.95rem;
+        padding: 0.8rem 1rem 0.9rem;
+      }
+    }
+
+    /* ≥ 1024px: four columns */
+    @media (min-width: 1024px) {
+      .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        grid-auto-rows: 12rem;
+      }
+
+      .gallery-image::before {
+        font-size: 2.5rem;
+      }
+
+      .gallery-header h1 {
+        font-size: 2.6rem;
+      }
+    }
+
+    /* ≥ 1280px: five columns, comfortable spacing */
+    @media (min-width: 1280px) {
+      .gallery-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1.5rem;
+        grid-auto-rows: 13rem;
+      }
+
+      .gallery-header h1 {
+        font-size: 2.8rem;
+      }
+    }
+
+    /* fine-tune for very small screens (≤360px) */
+    @media (max-width: 360px) {
+      body {
+        padding: 0.75rem 0.75rem 2rem;
+      }
+
+      .gallery-grid {
+        gap: 0.75rem;
+        grid-auto-rows: 9rem;
+      }
+
+      .gallery-caption {
+        padding: 0.6rem 0.7rem 0.7rem;
+        font-size: 0.8rem;
+      }
+
+      .gallery-image::before {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* ---------------------------------------------
+      Accessible focus & small extras
+    --------------------------------------------- */
+    .gallery-item:focus-within {
+      outline: 2px solid #2563eb;
+      outline-offset: 3px;
+    }
+
+    /* remove list bullets if ul used */
+    .gallery-grid li {
+      list-style: none;
+    }
+
+    /* demo note */
+    .demo-note {
+      margin-top: 2.5rem;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #7a7a7a;
+      border-top: 1px solid #e0e4e8;
+      padding-top: 1.75rem;
+    }
+
+    .demo-note code {
+      background: #eef1f5;
+      padding: 0.2rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="gallery">
+    <header class="gallery-header">
+      <h1>Long & short</h1>
+      <p>Alternating pattern · responsive masonry grid</p>
+    </header>
+
+    <!-- 
+      GALLERY GRID 
+      pattern: long (2 rows) → short (1 row) → long → short ...
+      ensures visual rhythm and spacing consistency
+    -->
+    <ul class="gallery-grid">
+      <!-- 1 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Coastal dawn</div>
+      </li>
+
+      <!-- 2 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Texture study</div>
+      </li>
+
+      <!-- 3 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Mountain trail</div>
+      </li>
+
+      <!-- 4 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Urban detail</div>
+      </li>
+
+      <!-- 5 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Forest light</div>
+      </li>
+
+      <!-- 6 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Minimal form</div>
+      </li>
+
+      <!-- 7 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Desert sky</div>
+      </li>
+
+      <!-- 8 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Still life</div>
+      </li>
+
+      <!-- 9 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">City lights</div>
+      </li>
+
+      <!-- 10 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Abstract</div>
+      </li>
+
+      <!-- 11 · LONG -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Lake reflection</div>
+      </li>
+
+      <!-- 12 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Geometric</div>
+      </li>
+
+      <!-- 13 · LONG (extra to show pattern continues) -->
+      <li class="gallery-item long">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Wild coast</div>
+      </li>
+
+      <!-- 14 · SHORT -->
+      <li class="gallery-item short">
+        <div class="gallery-image"></div>
+        <div class="gallery-caption">Quiet corner</div>
+      </li>
+    </ul>
+
+    <!-- hint for real images -->
+    <div class="demo-note">
+      ⚡ Replace <code>.gallery-image</code> with <code>&lt;img src="…" alt="…"&gt;</code> —<br>
+      the layout stays intact: long items span 2 rows, short items 1 row.
+    </div>
+  </main>
+
+  <!-- 
+    How to add real images:
+    – Inside each .gallery-image, insert: <img src="photo.jpg" alt="...">
+    – The image will cover the entire space, maintaining the long/short rhythm.
+    – No extra CSS needed – object-fit: cover handles it.
+  -->
+</body>
+
+</html>

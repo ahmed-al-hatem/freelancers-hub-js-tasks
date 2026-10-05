@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The prompt matrix — four pages, one product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #FAF9F5; --surface: #FFF; --ink: #14171D; --muted: #5D6472;
+      --line: #E6E4DC; --accent: #C6F24E; --accent-ink: #3E6B00;
+      --ok: #3E6B00; --no: #B4272B;
+      --display: 'Inter Tight', sans-serif;
+      --body: 'Inter', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      font-family: var(--body); background: var(--paper); color: var(--ink);
+      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1 { font-family: var(--display); letter-spacing: -.03em; line-height: 1.1; }
+
+    /* ---------------- toolbar ---------------- */
+    .bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .85rem 1.4rem;
+      padding: .8rem 1.1rem; background: var(--surface);
+      border-bottom: 1px solid var(--line); flex: none;
+    }
+    .bar h1 { font-size: 1rem; font-weight: 700; }
+    .bar h1 small {
+      display: block; font-family: var(--mono); font-size: .65rem; font-weight: 500;
+      color: var(--muted); letter-spacing: .04em; margin-top: .15rem;
+    }
+    .group { display: flex; align-items: center; gap: .4rem; }
+    .group > label {
+      font-family: var(--mono); font-size: .65rem; text-transform: uppercase;
+      letter-spacing: .09em; color: var(--muted);
+    }
+    .seg { display: flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+    .seg button {
+      font: inherit; font-size: .78rem; font-weight: 500; white-space: nowrap;
+      padding: .32rem .7rem; border: none; background: none; color: var(--muted);
+      border-radius: 999px; cursor: pointer;
+    }
+    .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    .seg button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+    input[type="range"] { accent-color: var(--accent-ink); width: 130px; }
+    .readout { font-family: var(--mono); font-size: .78rem; min-width: 60px; }
+    .hint { margin-left: auto; font-size: .76rem; color: var(--muted); max-width: 30ch; }
+    .hint b { color: var(--ink); }
+
+    /* ---------------- stage ---------------- */
+    .stage { flex: 1; overflow: auto; padding: .9rem; }
+
+    .matrix {
+      display: grid; gap: .55rem; height: 100%; min-height: 620px;
+      grid-template-columns: 30px 1fr 1fr;
+      grid-template-rows: 26px 1fr 1fr;
+    }
+    /* axis labels */
+    .axis {
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: .66rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); text-align: center;
+    }
+    .axis--v { writing-mode: vertical-rl; rotate: 180deg; }
+    .axis b { color: var(--ink); font-weight: 500; }
+
+    /* single-page view: one pane, axis labels hidden */
+    .stage[data-view]:not([data-view="matrix"]) .matrix {
+      grid-template-columns: 1fr; grid-template-rows: 1fr;
+    }
+    .stage[data-view]:not([data-view="matrix"]) .axis { display: none; }
+    .stage[data-view="good"]   .pane:not([data-key="good"]),
+    .stage[data-view="design"] .pane:not([data-key="design"]),
+    .stage[data-view="req"]    .pane:not([data-key="req"]),
+    .stage[data-view="bad"]    .pane:not([data-key="bad"]) { display: none; }
+
+    @media (max-width: 950px) {
+      .matrix { grid-template-columns: 1fr; grid-template-rows: none; }
+      .axis { display: none; }
+    }
+
+    /* ---------------- pane ---------------- */
+    .pane {
+      display: flex; flex-direction: column; min-width: 0; min-height: 300px;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 12px; overflow: hidden;
+    }
+    .pane[data-key="good"] { border-color: var(--accent-ink); }
+
+    .pane__head {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+      padding: .5rem .7rem; border-bottom: 1px solid var(--line); flex: none;
+    }
+    .pane__head strong { font-family: var(--display); font-size: .85rem; }
+    .scores { display: flex; gap: .35rem; }
+    .score {
+      font-family: var(--mono); font-size: .6rem; letter-spacing: .03em;
+      padding: .12rem .4rem; border-radius: 4px; white-space: nowrap;
+    }
+    .score--ok { background: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--ok); }
+    .score--no { background: color-mix(in srgb, #E5484D 13%, transparent); color: var(--no); }
+    .pane__links { margin-left: auto; display: flex; gap: .6rem; font-size: .72rem; }
+    .pane__links a { color: var(--accent-ink); font-weight: 500; text-decoration: none; }
+    .pane__links a:hover { text-decoration: underline; }
+
+    .viewport {
+      flex: 1; overflow: auto; padding: .7rem; display: flex; justify-content: center;
+      background: repeating-conic-gradient(#F1EFE8 0% 25%, var(--paper) 0% 50%) 50% / 16px 16px;
+    }
+    .frame {
+      flex: none; width: 100%; height: 100%; min-height: 240px;
+      border: 1px solid var(--line); border-radius: 7px; background: #fff;
+      box-shadow: 0 6px 20px -12px rgba(20,23,29,.4);
+    }
+
+    /* ---------------- note ---------------- */
+    .note {
+      flex: none; padding: .6rem 1.1rem; background: var(--surface);
+      border-top: 1px solid var(--line); font-size: .76rem; color: var(--muted);
+    }
+    .note b { color: var(--ink); }
+    .note kbd {
+      font-family: var(--mono); font-size: .72rem; background: var(--paper);
+      border: 1px solid var(--line); border-bottom-width: 2px;
+      border-radius: 4px; padding: .05rem .3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bar">
+    <h1>The prompt matrix<small>one product · one model · four prompts</small></h1>
+
+    <div class="group">
+      <label id="vL">Show</label>
+      <div class="seg" role="group" aria-labelledby="vL">
+        <button data-view="matrix" aria-pressed="true">All four</button>
+        <button data-view="bad"    aria-pressed="false">Bad</button>
+        <button data-view="design" aria-pressed="false">Design only</button>
+        <button data-view="req"    aria-pressed="false">Req only</button>
+        <button data-view="good"   aria-pressed="false">Good</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <label id="wL">Width</label>
+      <div class="seg" role="group" aria-labelledby="wL">
+        <button data-w="320"  aria-pressed="false">320</button>
+        <button data-w="390"  aria-pressed="false">390</button>
+        <button data-w="768"  aria-pressed="false">768</button>
+        <button data-w="1280" aria-pressed="false">1280</button>
+        <button data-w="0"    aria-pressed="true">Fill</button>
+      </div>
+      <input type="range" id="slider" min="320" max="1440" step="10" value="1440" aria-label="Viewport width">
+      <span class="readout" id="readout">Fill</span>
+    </div>
+
+    <p class="hint">At <b>1280</b> the bottom-left looks best. At <b>320</b> it's the worst. That's the lesson.</p>
+  </div>
+
+  <div class="stage" id="stage" data-view="matrix">
+    <div class="matrix">
+
+      <div class="axis"></div>
+      <div class="axis">Requirements <b>&#10007;</b></div>
+      <div class="axis">Requirements <b>&#10003;</b></div>
+
+      <div class="axis axis--v">Design <b>&#10007;</b></div>
+
+      <section class="pane" data-key="bad">
+        <div class="pane__head">
+          <strong>Analytics App</strong>
+          <span class="scores"><span class="score score--no">DESIGN ✗</span><span class="score score--no">REQS ✗</span></span>
+          <span class="pane__links"><a href="prompts/bad-prompt.md">prompt</a><a href="bad/index.html" target="_blank" rel="noopener">open ↗</a></span>
+        </div>
+        <div class="viewport"><iframe class="frame" src="bad/index.html" title="Built from the bad prompt"></iframe></div>
+      </section>
+
+      <section class="pane" data-key="req">
+        <div class="pane__head">
+          <strong>Pulse</strong>
+          <span class="scores"><span class="score score--no">DESIGN ✗</span><span class="score score--ok">REQS ✓</span></span>
+          <span class="pane__links"><a href="prompts/requirements-only-prompt.md">prompt</a><a href="requirements-only/index.html" target="_blank" rel="noopener">open ↗</a></span>
+        </div>
+        <div class="viewport"><iframe class="frame" src="requirements-only/index.html" title="Built from the requirements-only prompt"></iframe></div>
+      </section>
+
+      <div class="axis axis--v">Design <b>&#10003;</b></div>
+
+      <section class="pane" data-key="design">
+        <div class="pane__head">
+          <strong>Pulse</strong>
+          <span class="scores"><span class="score score--ok">DESIGN ✓</span><span class="score score--no">REQS ✗</span></span>
+          <span class="pane__links"><a href="prompts/design-only-prompt.md">prompt</a><a href="design-only/index.html" target="_blank" rel="noopener">open ↗</a></span>
+        </div>
+        <div class="viewport"><iframe class="frame" src="design-only/index.html" title="Built from the design-only prompt"></iframe></div>
+      </section>
+
+      <section class="pane" data-key="good">
+        <div class="pane__head">
+          <strong>Pulse</strong>
+          <span class="scores"><span class="score score--ok">DESIGN ✓</span><span class="score score--ok">REQS ✓</span></span>
+          <span class="pane__links"><a href="prompts/good-prompt.md">prompt</a><a href="good/index.html" target="_blank" rel="noopener">open ↗</a></span>
+        </div>
+        <div class="viewport"><iframe class="frame" src="good/index.html" title="Built from the good prompt"></iframe></div>
+      </section>
+
+    </div>
+  </div>
+
+  <p class="note">
+    <b>Teaching notes:</b> the annotated breakdown is in <b>README.md</b>; all four prompts are in <b>prompts/</b>.
+    &nbsp;·&nbsp; Blank panes mean your browser is blocking local iframes — run
+    <kbd>python3 -m http.server</kbd> in this folder and open <kbd>localhost:8000</kbd>.
+  </p>
+
+  <script>
+    const stage   = document.getElementById('stage');
+    const slider  = document.getElementById('slider');
+    const readout = document.getElementById('readout');
+    const frames  = document.querySelectorAll('.frame');
+
+    const press = (btns, active) =>
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b === active)));
+
+    const viewBtns = [...document.querySelectorAll('[data-view]')].filter(b => b.tagName === 'BUTTON');
+    viewBtns.forEach(btn => btn.addEventListener('click', () => {
+      stage.dataset.view = btn.dataset.view;
+      press(viewBtns, btn);
+    }));
+
+    const wBtns = [...document.querySelectorAll('[data-w]')];
+
+    function setWidth(px) {
+      frames.forEach(f => { f.style.width = px ? px + 'px' : '100%'; });
+      readout.textContent = px ? px + 'px' : 'Fill';
+      if (px) slider.value = Math.min(Math.max(px, +slider.min), +slider.max);
+    }
+
+    wBtns.forEach(btn => btn.addEventListener('click', () => {
+      press(wBtns, btn);
+      setWidth(+btn.dataset.w);
+    }));
+
+    slider.addEventListener('input', () => {
+      press(wBtns, null);
+      setWidth(+slider.value);
+    });
+  </script>
+</body>
+</html>

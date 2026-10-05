@@ -1,0 +1,276 @@
+/* =========================================================================
+   Pulse — requirements defined, design undefined.
+
+   Read this file next to good/styles.css. The STRUCTURE is almost identical:
+   tokens, mobile-first, clamp(), auto-fit grids, dark mode, reduced motion.
+   Every requirement was met.
+
+   What's missing is every decision a designer would have made. The prompt
+   didn't name a palette, so this is the default blue. It didn't name a
+   typeface, so this is the system stack. It didn't describe a feeling, so
+   there isn't one. The result is correct, shippable, and anonymous — it
+   could be any B2B product on earth.
+   ========================================================================= */
+
+/* ---------- Tokens (asked for, so they exist — but the values are defaults) ---------- */
+:root {
+  --bg:        #ffffff;
+  --bg-alt:    #f8f9fa;
+  --surface:   #ffffff;
+  --text:      #212529;
+  --text-muted:#6c757d;   /* 4.68:1 on white — passes AA, chosen by no one */
+  --border:    #dee2e6;
+  --primary:   #2563eb;   /* the default blue */
+  --primary-h: #1d4ed8;
+  --on-primary:#ffffff;
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --space-1: 0.25rem; --space-2: 0.5rem;  --space-3: 1rem;
+  --space-4: 1.5rem;  --space-5: 2rem;    --space-6: 3rem;  --space-7: 4rem;
+
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --max-width: 1140px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #1a1a1a;
+    --bg-alt:    #242424;
+    --surface:   #242424;
+    --text:      #e9ecef;
+    --text-muted:#adb5bd;   /* 7.9:1 on #1a1a1a */
+    --border:    #3a3a3a;
+    --primary:   #6ea8fe;   /* lightened so it still passes on dark */
+    --primary-h: #8bb9fe;
+    --on-primary:#0b1220;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1, h2, h3 { line-height: 1.25; font-weight: 700; }
+h1 { font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem); }
+h2 { font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem); }
+h3 { font-size: 1.125rem; }
+
+a { color: var(--primary); }
+a:hover { color: var(--primary-h); }
+ul, ol { list-style: none; padding: 0; }
+img { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.skip-link {
+  position: absolute; left: var(--space-3); top: -60px; z-index: 100;
+  background: var(--primary); color: var(--on-primary);
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius);
+}
+.skip-link:focus { top: var(--space-3); }
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+.narrow { max-width: 720px; }
+.center { text-align: center; }
+
+.section { padding: var(--space-7) 0; }
+.section.alt { background: var(--bg-alt); }
+.section-head { margin-bottom: var(--space-5); }
+
+.small { font-size: 0.875rem; color: var(--text-muted); }
+.lead  { font-size: 1.0625rem; color: var(--text-muted); }
+
+/* One grid, reused for features, steps, stats, pricing and the footer.
+   Nothing is composed differently from anything else. */
+.grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+.box h3 { margin-bottom: var(--space-2); }
+.box p  { color: var(--text-muted); font-size: 0.9375rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
+.btn-primary   { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-h); border-color: var(--primary-h); color: var(--on-primary); }
+.btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-secondary:hover { border-color: var(--text-muted); color: var(--text); }
+.btn-link { color: var(--text-muted); }
+.btn-lg    { padding: 0.75rem 1.4rem; font-size: 1rem; }
+.btn-block { display: block; width: 100%; }
+.btn-row   { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 var(--space-3); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-3); padding-bottom: var(--space-3);
+}
+.logo { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+
+.menu-btn {
+  margin-left: auto;
+  padding: 0.4rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.main-nav { display: none; width: 100%; }
+.main-nav.open { display: block; }
+.main-nav ul { display: grid; gap: var(--space-1); padding-bottom: var(--space-2); }
+.main-nav a { display: block; padding: var(--space-2) 0; color: var(--text); text-decoration: none; }
+
+.header-actions { display: none; gap: var(--space-2); }
+
+@media (min-width: 800px) {
+  .menu-btn { display: none; }
+  .main-nav { display: block; width: auto; margin-left: var(--space-5); }
+  .main-nav ul { display: flex; gap: var(--space-4); padding: 0; }
+  .header-actions { display: flex; margin-left: auto; }
+}
+
+/* ---------- Hero ---------- */
+.hero { padding: var(--space-6) 0 var(--space-7); }
+.tagline {
+  display: inline-block;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.15rem 0.6rem;
+  margin-bottom: var(--space-3);
+}
+.hero h1 { margin-bottom: var(--space-3); }
+.hero .lead { max-width: 60ch; }
+
+.panel {
+  margin-top: var(--space-5);
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+.panel-q { font-weight: 500; margin-bottom: var(--space-3); }
+.panel-metric { font-size: 2rem; font-weight: 700; margin-bottom: var(--space-3); }
+.panel-metric .down { font-size: 0.875rem; font-weight: 400; color: #b02a37; }
+@media (prefers-color-scheme: dark) { .panel-metric .down { color: #ea868f; } }
+.panel-list { display: grid; gap: var(--space-2); font-size: 0.9375rem; color: var(--text-muted); }
+
+/* ---------- Strip ---------- */
+.strip { padding: var(--space-5) 0; border-bottom: 1px solid var(--border); }
+.logo-list {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-3);
+  font-weight: 600; color: var(--text-muted);
+}
+
+/* ---------- Steps / stats ---------- */
+.step-n { font-size: 0.8125rem; color: var(--primary); font-weight: 600; margin-bottom: var(--space-1); }
+.stat-n { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem); font-weight: 700; }
+
+/* ---------- Quote ---------- */
+.quote { max-width: 760px; margin: 0 auto; text-align: center; }
+.quote blockquote p { font-size: 1.125rem; margin-bottom: var(--space-3); }
+.quote figcaption { font-size: 0.875rem; color: var(--text-muted); }
+
+/* ---------- Pricing ---------- */
+.plan { display: flex; flex-direction: column; gap: var(--space-2); }
+.plan.featured { border-color: var(--primary); border-width: 2px; }
+.badge {
+  align-self: flex-start;
+  font-size: 0.75rem; font-weight: 600;
+  background: var(--primary); color: var(--on-primary);
+  padding: 0.1rem 0.5rem; border-radius: var(--radius);
+}
+.price { font-size: 1.75rem; font-weight: 700; }
+.ticks { display: grid; gap: var(--space-2); font-size: 0.9375rem; color: var(--text-muted); margin: var(--space-2) 0 var(--space-3); }
+.ticks li::before { content: "✓ "; color: var(--primary); font-weight: 700; }
+.plan .btn { margin-top: auto; }
+
+/* ---------- FAQ ---------- */
+details { border-bottom: 1px solid var(--border); }
+summary { padding: var(--space-3) 0; font-weight: 600; cursor: pointer; }
+details p { padding-bottom: var(--space-3); color: var(--text-muted); }
+
+/* ---------- CTA ---------- */
+.cta-section h2 { margin-bottom: var(--space-3); }
+.signup {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  justify-content: center; align-items: center;
+  margin-top: var(--space-4);
+}
+.signup label {
+  /* visible label, because the requirements asked for one */
+  width: 100%; font-size: 0.875rem; color: var(--text-muted);
+}
+.signup input {
+  flex: 1 1 240px; min-width: 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+#done { margin-top: var(--space-3); }
+
+/* ---------- Footer ---------- */
+.site-footer { border-top: 1px solid var(--border); padding: var(--space-6) 0 var(--space-4); }
+.site-footer h2 { font-size: 0.875rem; margin-bottom: var(--space-2); }
+.site-footer ul { display: grid; gap: var(--space-1); font-size: 0.9375rem; }
+.site-footer a { color: var(--text-muted); text-decoration: none; }
+.site-footer a:hover { color: var(--text); text-decoration: underline; }
+.copyright { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--border); }
+
+/* ---------- Motion preference ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
