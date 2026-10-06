@@ -5,7 +5,11 @@
 // TODO 1: add up 1 + 2 + ... + n
 //         Hint: let total = 0; loop i from 1 to n; total += i; return total
 function sumTo(n) {
-
+    let total = 0;
+    for (let i = 1; i <= n; i++) {
+        total += i;
+    }
+    return total;
 }
 
 
@@ -13,7 +17,11 @@ function sumTo(n) {
 //         Hint: start with let text = ""; loop i DOWN from n to 1 (i--);
 //         add i and a space each time, then add "Liftoff!" at the end.
 function countdown(n) {
-
+    let text = "";
+    for (let i = n; i >= 1; i--) {
+        text += i + " ";
+    }
+    return text + "Liftoff!";
 }
 
 
@@ -21,17 +29,36 @@ function countdown(n) {
 //          "divides by 3" means n % 3 === 0
 //          Which check has to come FIRST?
 function fizzBuzz(n) {
-
+    if (n % 3 === 0 && n % 5 === 0) {
+      return "FizzBuzz";
+    } else if (n % 3 === 0) {
+      return "Fizz";
+    } else if (n % 5 === 0) {
+      return "Buzz";
+    } else {
+      return String(n);
+    }
 }
 
 // TODO 3b: write a loop that logs fizzBuzz(i) for i from 1 to 15
-
+console.log("--- FizzBuzz 1 to 15 ---");
+for (let i = 1; i <= 15; i++) {
+  console.log(fizzBuzz(i));
+}
 
 // TODO 4: count the vowels in a word, capitals included
 //         Hint: for (const letter of word) { ... }
 //         "aeiou".includes(letter.toLowerCase()) tells you if it's a vowel
 function countVowels(word) {
-
+  let count = 0;
+  const vowels = "aeiou";
+  
+  for (const letter of word) {
+    if (vowels.includes(letter.toLowerCase())) {
+      count++;
+    }
+  }
+  return count;
 }
 
 
@@ -40,5 +67,19 @@ function countVowels(word) {
 //         doublingsUntil(100) → 7   (1→2→4→8→16→32→64→128)
 //         A while loop fits: you don't know in advance how many rounds.
 function doublingsUntil(limit) {
+  let val = 1;
+  let steps = 0;
+  
+  while (val < limit) {
+    val *= 2;
+    steps++;
+  }
+  return steps;
+}
 
+// BONUS
+function multiplicationTable(n) {
+  for (let i = 1; i <= 10; i++) {
+    console.log(`${n} x ${i} = ${n * i}`);
+  }
 }

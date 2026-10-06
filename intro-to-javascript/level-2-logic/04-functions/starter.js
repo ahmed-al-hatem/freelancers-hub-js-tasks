@@ -11,30 +11,44 @@ console.log("double(4) =", double(4));
 
 // TODO 1: function square(n) → returns n times n
 //         square(5) should give back 25
-
+function square(n) {
+  return n * n;
+}
 
 // TODO 2: function celsiusToFahrenheit(c) → returns c * 9 / 5 + 32
 //         celsiusToFahrenheit(100) should give back 212
-
+function celsiusToFahrenheit(c) {
+  return (c * 9) / 5 + 32;
+}
 
 // TODO 3: function greet(name = "friend") → returns `Hello, ${name}!`
 //         greet("Sara") → "Hello, Sara!"     greet() → "Hello, friend!"
 //         The = "friend" part is a DEFAULT value, used when nothing is passed in.
-
+function greet(name = "friend") {
+  return `Hello, ${name}!`;
+}
 
 // TODO 4: An ARROW FUNCTION is a shorter way to write a function:
 //         const add = (a, b) => a + b;
 //         With no { } the result is returned automatically.
-
+const add = (a, b) => a + b;
 
 // TODO 5: function priceWithTax(price, taxRate = 0.15)
 //         → returns the price plus tax
 //         priceWithTax(100) → 115     priceWithTax(100, 0) → 100
-
+function priceWithTax(price, taxRate = 0.15) {
+  return price + price * taxRate;
+}
 
 // Try your functions here:
 // console.log(square(5), celsiusToFahrenheit(100), greet(), add(2, 3));
-
+console.log("square(5) =", square(5));
+console.log("celsiusToFahrenheit(100) =", celsiusToFahrenheit(100));
+console.log("greet('Sara') =", greet("Sara"));
+console.log("greet() =", greet());
+console.log("add(2, 3) =", add(2, 3));
+console.log("priceWithTax(100) =", priceWithTax(100));
+console.log("priceWithTax(100, 0) =", priceWithTax(100, 0));
 
 // TODO 6: Read this, run it, and answer in a comment:
 //         why does `result` show undefined?
@@ -44,3 +58,9 @@ function logDouble(n) {
 const result = logDouble(5);
 console.log("result is", result);
 // Your answer:
+// result is undefined because logDouble prints the value to the console using 
+// console.log but it does not have return statement. In JavaScript, 
+// functions that do not explicitly return a value implicitly return undefined.
+
+// BONUS:
+const isEven = (n) => n % 2 === 0;
