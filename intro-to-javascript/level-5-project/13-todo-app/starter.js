@@ -43,7 +43,8 @@ function render() {
     // TODO 2: if the todo is done:
     //         - tick the checkbox:  checkbox.checked = ...
     //         - add the class "done" to the li
-
+    checkbox.checked = todo.done;
+    li.classList.toggle("done", todo.done);
 
     li.append(checkbox, span, del);
     list.append(li);
@@ -51,7 +52,8 @@ function render() {
 
   // TODO 3: count the todos that are NOT done and show "2 left"
   //         Hint: todos.filter(t => ...).length
-
+  const left = todos.filter((t) => !t.done).length;
+  remainingEl.textContent = `${left} left`;
 }
 
 
@@ -62,12 +64,14 @@ function render() {
 // TODO 4: add a todo
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  // const text = input.value.trim();   ← .trim() removes spaces at both ends
-  // if text is empty → return (do nothing)
-  // todos.push({ id: nextId, text: text, done: false });
-  // nextId++;
-  // clear the input, then render()
 
+  const text = input.value.trim();
+  if (text === "") return;
+
+  todos.push({ id: nextId, text: text, done: false });
+  nextId++;
+  input.value = "";
+  render();
 });
 
 
@@ -77,20 +81,25 @@ list.addEventListener("click", (event) => {
   if (!li) return;
   const id = Number(li.dataset.id);        // data-* values are strings, so convert
 
-  // if event.target is the checkbox (event.target.type === "checkbox"):
-  //   find the todo with this id and flip its done:  todo.done = !todo.done
-  //
-  // if event.target has the class "delete" (event.target.classList.contains("delete")):
-  //   remove it: todos = todos.filter(t => t.id !== id)
-  //
-  // then render()
+  if (event.target.type === "checkbox") {
+    const todo = todos.find((t) => t.id === id);
+    if (todo) todo.done = !todo.done;
+  } else if (event.target.classList.contains("delete")) {
+    todos = todos.filter((t) => t.id !== id);
+  } else {
+    return;
+  }
 
+  render();
 });
 
 
 // TODO 6: "Clear completed" keeps only the todos that are NOT done
 //         todos = todos.filter(...)   then render()
-
+clearBtn.addEventListener("click", () => {
+  todos = todos.filter((t) => !t.done);
+  render();
+});
 
 
 render(); // draw the starting list
