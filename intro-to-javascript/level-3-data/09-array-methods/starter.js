@@ -15,27 +15,30 @@ const products = [
 
 // TODO 1: log each product as "Notebook: $4"
 //         products.forEach(product => console.log(...))
-
+products.forEach(product => console.log(`${product.name}: $${product.price}`));
 
 // TODO 2: const names = products.map(product => ...)
 //         → ["Notebook", "Backpack", ...]
-
+const names = products.map(product => product.name);
 
 // TODO 3: const available = products.filter(product => ...)
 //         Keep a product when the function returns true.
-
+const available = products.filter(product => product.inStock);
 
 // TODO 4: const cheapNames = names of products with price under 10
 //         products.filter(...).map(...)
-
+const cheapNames = products.filter(product => product.price < 10).map(product => product.name);
 
 // TODO 5: const backpack = products.find(product => ...)
-
+const backpack = products.find(product => product.name === "Backpack");
 
 // TODO 6: const total = products.reduce((sum, product) => ..., 0)
 //         sum starts at 0 (the second argument). Return the new sum each time.
-
+const total = products.reduce((sum, product) => sum + product.price, 0);
 
 // TODO 7: const stockValue = the total price of in-stock products only
 //         Hint: filter first, then reduce.
+const stockValue = products.filter(product => product.inStock).reduce((sum, product) => sum + product.price, 0);
 
+// Bonus:
+const sortedNames = [...products].sort((a, b) => a.price - b.price).map(product => product.name);
